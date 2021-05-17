@@ -2,6 +2,16 @@
 
 export default (req, res) => {
   res.statusCode = 200
+
+  let openWeatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + req['headers']['x-vercel-ip-city'] + "&appid=" + process.env.OpenWeatherAPIKey
+  const res = await fetch(openWeatherURL)
+  const data = await res.json()
+
+  if (!data) {
+    return {
+      notFound: true,
+    }
+  }
   res.json(
       { 
         client: req['headers'],
@@ -9,38 +19,14 @@ export default (req, res) => {
           date: "17/05/2021",
           time: "19:15"
         },
-        weather: {
-          id: 800,
-          main: "Clear",
-          description: "clear sky",
-          icon: "01d"
-        },
-        base: "stations",
-        main: {
-          temp: 282.55,
-          feels_like: 281.86,
-          temp_min: 280.37,
-          temp_max: 284.26,
-          pressure: 1023,
-          humidity: 100
-        },
-        visibility: 16093,
-        wind: {
-          speed: 1.5,
-          deg: 350
-        },
-        clouds: {
-          all: 1
-        },
-        dt: 1560350645,
-        sys: {
-          type: 1,
-          id: 5122,
-          message: 0.0139,
-          country: "US",
-          sunrise: 1560343627,
-          sunset: 1560396563
-        }
+        weather: data["weather"],
+        base: data["base"],
+        main: data["main"],
+        visibility: data["visibility"],
+        wind: data["wind"],
+        clouds: data["clouds"],
+        dt: data["dt"],
+        sys: data["sys"]
       }
     )
 }
