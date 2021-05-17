@@ -4,11 +4,7 @@ export default (req, res) => {
   res.statusCode = 200
   res.json(
       { 
-        client: {
-          ip: req["x-forwarded-for"],
-          city: req["x-vercel-ip-city"],
-          country: req["x-vercel-ip-country"]
-        },
+        client: req['headers'],
         timestamp: {
           date: "17/05/2021",
           time: "19:15"
@@ -44,7 +40,7 @@ export default (req, res) => {
           country: "US",
           sunrise: 1560343627,
           sunset: 1560396563
-        },
+        }
       }
     )
 }
